@@ -2,7 +2,7 @@
 async function populateCurrencies() {
   try {
     // Fetch latest rates with base EUR (default)
-    const res = await fetch('https://api.frankfurter.app/v1/latest');
+    const res = await fetch('https://api.frankfurter.dev/v1/latest');
     const data = await res.json();
     const currencyCodes = Object.keys(data.rates).concat(data.base).sort();
 
@@ -53,7 +53,7 @@ async function convertCurrency() {
   }
 
   try {
-    const res = await fetch(`https://api.frankfurter.app/v1/latest?from=${from}&to=${to}`);
+    const res = await fetch(`https://api.frankfurter.dev/v1/latest?from=${from}&to=${to}`);
     const data = await res.json();
 
     const rate = data.rates[to];

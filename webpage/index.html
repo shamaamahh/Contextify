@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contextify – Currency With Meaning</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Contextify</h1>
+    <p>Understand your money abroad.</p>
+
+    <label>Amount:</label>
+    <input type="number" id="amount" value="50" />
+
+    <label>From Currency:</label>
+    <select id="from">
+      <option value="USD">USD</option>
+      <option value="EUR">EUR</option>
+    </select>
+
+    <label>To Country:</label>
+    <select id="country">
+      <option value="Japan">Japan</option>
+      <option value="France">France</option>
+    </select>
+
+    <button onclick="convertCurrency()">Convert</button>
+
+    <div id="result"></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+body {
+    font-family: sans-serif;
+    background: #f2f2f2;
+    padding: 2rem;
+  }
+  
+  .container {
+    background: white;
+    max-width: 500px;
+    margin: auto;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+  input, select, button {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  #result {
+    margin-top: 1rem;
+    font-weight: bold;
+  }
+  

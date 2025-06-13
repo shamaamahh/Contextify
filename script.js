@@ -1,7 +1,7 @@
 // Populate currency dropdowns dynamically on page load
 async function populateCurrencies() {
   try {
-    const res = await fetch("https://api.exchangerate.host/latest");
+    const res = await fetch(`https://api.exchangerate.host/latest?base=${from}`);
     const data = await res.json();
     const currencyCodes = Object.keys(data.rates).sort();
 

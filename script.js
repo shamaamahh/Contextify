@@ -1,12 +1,17 @@
 // Populate currency dropdowns dynamically on page load
 async function populateCurrencies() {
   try {
-    const res = await fetch('https://api.frankfurter.app/latest?from=USD');
+    // Fetch latest rates with base EUR (default)
+    const res = await fetch('https://api.frankfurter.app/v1/latest');
     const data = await res.json();
-    const currencyCodes = Object.keys(data.rates).sort();
+    const currencyCodes = Object.keys(data.rates).concat(data.base).sort();
 
     const fromSelect = document.getElementById("from");
     const toSelect = document.getElementById("to");
+
+    // Clear any existing options (in case of reload)
+    fromSelect.innerHTML = '';
+    toSelect.innerHTML = '';
 
     currencyCodes.forEach(code => {
       const optionFrom = document.createElement("option");
@@ -20,7 +25,7 @@ async function populateCurrencies() {
       toSelect.appendChild(optionTo);
     });
 
-    // Set defaults
+    // Set default selections
     fromSelect.value = "USD";
     toSelect.value = "EUR";
 
@@ -42,8 +47,13 @@ async function convertCurrency() {
   const from = document.getElementById("from").value;
   const to = document.getElementById("to").value;
 
+  if (from === to) {
+    document.getElementById("result").innerHTML = `${amount} ${from} ≈ ${amount.toFixed(2)} ${to}`;
+    return;
+  }
+
   try {
-    const res = await fetch(`https://api.exchangerate.host/latest?base=${from}`);
+    const res = await fetch(`https://api.frankfurter.app/v1/latest?from=${from}&to=${to}`);
     const data = await res.json();
 
     const rate = data.rates[to];
@@ -54,36 +64,7 @@ async function convertCurrency() {
 
     const converted = amount * rate;
 
-    // Show conversion result
-    let resultHTML = `<p>${amount} ${from} ≈ ${converted.toFixed(2)} ${to}</p>`;
-
-    // Optional: Show context items if you want
-    // For example, map some currencies to countries for context lookup
-    const currencyToCountry = {
-      "JPY": "Japan",
-      "EUR": "France",
-      "USD": "USA",
-      // Add more mappings if you want context items for more countries
-    };
-
-    const country = currencyToCountry[to];
-    if (country) {
-      const contextRes = await fetch("data.json");
-      const contextData = await contextRes.json();
-      const items = contextData[country];
-
-      if (items) {
-        resultHTML += "<ul>";
-        for (const [item, price] of Object.entries(items)) {
-          const quantity = converted / price;
-          resultHTML += `<li>${item}: ${quantity.toFixed(1)}×</li>`;
-        }
-        resultHTML += "</ul>";
-      }
-    }
-
-    document.getElementById("result").innerHTML = resultHTML;
-
+    document.getElementById("result").innerHTML = `<p>${amount} ${from} ≈ ${converted.toFixed(2)} ${to}</p>`;
   } catch (error) {
     document.getElementById("result").innerHTML = "⚠️ Error fetching exchange rates.";
     console.error(error);
